@@ -18,58 +18,74 @@ public class ImageTesterUnPointNoir {
 
 
     public static void main(String args[]) throws Exception {
-    	//Je récupère le fichier
+    	// Je récupère le fichier
         File file = new File("C:/dev/WorkspaceFormationJava/OrganismCounter/src/test/unPointNoir.jpg");
-        //Je la mets dans une stream
+        // Je la mets dans une stream
         ImageInputStream is = ImageIO.createImageInputStream(file);
-        //Je crée un pointeur sur cette stream
-        Iterator iter = ImageIO.getImageReaders(is);
+        // Je crée un pointeur sur cette stream
+        Iterator<?> iter = ImageIO.getImageReaders(is);
 
-        //Si ça ne pointe pas sur un fichier je sors du programme
+        // Si ça ne pointe pas sur un fichier je sors du programme
         if (!iter.hasNext())
         {
             System.out.println("Cannot load the specified file "+ file);
             System.exit(1);
         }
-        //Je mets ce pointeur sur une imageReader
+        // Je mets ce pointeur sur une imageReader
         ImageReader imageReader = (ImageReader)iter.next();
-        //Je récupère les Inputs de la stream
+        // Je récupère les Inputs de la stream
         imageReader.setInput(is);
 
         
-        //Je crée mon image bufferisée avec ce pointeur sur le début de l'image
+        // Je crée mon image bufferisée avec ce pointeur sur le début de l'image
         BufferedImage image = imageReader.read(0);
 
-        //Je récupère la taille de l'image
+        // Je récupère la taille de l'image
         int height = image.getHeight();
         int width = image.getWidth();
 
-        //Je crée une map qui va contenir 
+        // Je crée une map qui va contenir 
         // clé = la couleur, valeur = le nombre de pixels contenant cette couleur
         Map<Integer, Integer> m = new HashMap<>();
+        
+        // Je parcours toute l'image bufferisée
+        // les lignes
         for(int i=0; i < width ; i++)
         {
+        	// les colonnes 
             for(int j=0; j < height ; j++)
             {
+            	// Je récupère la couleur à la position i, j
                 int rgb = image.getRGB(i, j);
+                // Une table de couleurs rouge, verte, bleue
                 int[] rgbArr = getRGBArr(rgb);                
-                // Filter out grays....                
+                // Filter out grays...
+                // Si la couleur n'est pas le gris
                 if (!isGray(rgbArr)) {                
-                    Integer counter = (Integer) m.get(rgb);   
+                	// On récupère le compteur de pixels de la couleur rgb
+                    Integer counter = (Integer) m.get(rgb);
+                    //Si on rencontre la première, il n'y a pas de compteur, on initialise le compteur à 0
                     if (counter == null)
                         counter = 0;
-                    counter++;                                
+                    //Puis on incrémente le compteur
+                    counter++;                      
+                    //Puis on ajoute une clé / valeur à la map : la clé=la couleur rgb, la valeur=le compteur de pixel de cette couleur
                     m.put(rgb, counter);                
                 }                
             }
-        }        
+        }   
+        //On récupère depuis la map une liste qu'on trie de la couleur la moins courante à la plus courante, 
+        // on récupère cette couleur et on l'affiche en hexadécimal
         String colourHex = getMostCommonColour(m);
         System.out.println(colourHex);
     }
 
 
-    public static String getMostCommonColour(Map map) {
-        List list = new LinkedList(map.entrySet());
+    // On récupère depuis la map une liste qu'on trie de la couleur la moins courante à la plus courante, 
+    // on récupère cette couleur et on l'affiche en hexadécimal
+    public static String getMostCommonColour(Map<Integer, Integer> map) {
+    	//
+        List<?> list = new LinkedList(map.entrySet());
         Collections.sort(list, new Comparator() {
               public int compare(Object o1, Object o2) {
                 return ((Comparable) ((Map.Entry) (o1)).getValue())
