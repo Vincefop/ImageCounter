@@ -18,7 +18,7 @@ public class ImageTester {
 
 
     public static void main(String args[]) throws Exception {
-        File file = new File("C:/dev/WorkspaceFormationJava/OrganismCounter/src/test/rouge.png");
+        File file = new File("C:/dev/WorkspaceFormationJava/OrganismCounter/src/test/vertMoche.jpg");
         ImageInputStream is = ImageIO.createImageInputStream(file);
         Iterator iter = ImageIO.getImageReaders(is);
 

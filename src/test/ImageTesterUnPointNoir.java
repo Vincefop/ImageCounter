@@ -65,8 +65,9 @@ public class ImageTesterUnPointNoir {
                 	// On récupère le compteur de pixels de la couleur rgb
                     Integer counter = (Integer) m.get(rgb);
                     //Si on rencontre la première, il n'y a pas de compteur, on initialise le compteur à 0
-                    if (counter == null)
+                    if (counter == null) {
                         counter = 0;
+                        }
                     //Puis on incrémente le compteur
                     counter++;                      
                     //Puis on ajoute une clé / valeur à la map : la clé=la couleur rgb, la valeur=le compteur de pixel de cette couleur
